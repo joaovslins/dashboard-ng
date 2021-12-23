@@ -1,0 +1,52 @@
+
+<app-drop-down-div [showDropDown]="true" width="80%" height="60vh" >
+    <button mat-raised-button color="primary" class="mr-2" (click)="modalNew.open('md')">Novo vendedor</button>
+    <div style="height: 55vh; overflow: auto;">
+        <table mat-table  [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nome">
+                <th mat-header-cell *matHeaderCellDef> Nome </th>
+                <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+            </ng-container>
+
+             <ng-container matColumnDef="acoes">
+                <th mat-header-cell *matHeaderCellDef> # </th>
+                <td mat-cell *matCellDef="let element"> 
+               <button mat-raised-button class="mr-2" color="warn" (click)="deleteItem = element; modalDelete.open('md')">Excluir</button>    
+                <button mat-raised-button color="primary" (click)="update(element)">Editar</button>    
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+            <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
+        </table>
+
+</div>
+    
+</app-drop-down-div> 
+
+
+<app-modal #modalNew [title]="form.value.id ? 'Editando o vendedor id: '+form.value.id : 'Novo vendedor'">
+    <form [formGroup]="form">
+        <mat-form-field class="col-md">
+            <mat-label>Nome</mat-label>
+            <input matInput type="text" formControlName="nome">
+        </mat-form-field>
+
+        <button mat-raised-button class="mr-2"  color="primary" (click)="sendResource()">Enviar</button>
+        <button mat-raised-button (click)="modalNew.close()">Cancelar</button>
+    </form>
+</app-modal>
+
+
+<app-modal #modalDelete >
+    <h2>{{'Deseja excluir o vendedor id: '+deleteItem?.id}}</h2>
+    <button mat-raised-button (click)="delete()" color="warn" class="mr-2">Sim</button>
+    <button mat-raised-button (click)="modalDelete.close()">Cancelar</button>
+</app-modal>
